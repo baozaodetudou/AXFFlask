@@ -1,0 +1,42 @@
+{% extends "base/base_user.html" %}
+
+{% load static %}
+
+{% block extCSS %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static "user/css/user_login.css" %}">
+{% endblock %}
+
+{% block extJS %}
+    {{ block.super }}
+    <script type="text/javascript" src="{% static "user/js/user_login.js" %}"></script>
+{% endblock %}
+
+
+
+{% block content %}
+    <div class="container">
+    <h6 id="msg">{{ msg }}</h6>
+        <form action="{% url "axf:user_login" %}" method="post" onsubmit="return data_security()">
+
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="exampleInputEmail1">请输入用户名</label>
+                <input type="text" name="u_name" class="form-control" id="u_name" placeholder="请输入用户名">
+                <span id="u_name_info"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="exampleInputPassword1">请输入密码</label>
+                <input type="password" name="u_password" class="form-control" id="u_password" placeholder="请输入密码">
+            </div>
+
+            <button type="submit" class="btn btn-danger btn-block">登录</button>
+
+
+        </form>
+
+
+    </div>
+{% endblock %}

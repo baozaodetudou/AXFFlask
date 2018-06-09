@@ -1,0 +1,129 @@
+{% extends "base/base_main.html" %}
+
+{% load static %}
+
+{% block extCSS %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static "axf/market/css/market.css" %}">
+{% endblock %}
+
+{% block extJS %}
+    {{ block.super }}
+    <script type="text/javascript" src="{% static "axf/market/js/market.js" %}"></script>
+{% endblock %}
+
+{% block content %}
+    <div id="market">
+        {#    左侧导航栏#}
+        <aside>
+            <ul>
+                {% for foodtype in foodtypes %}
+                    <li>
+                        <a href="{% url "axf:market_with_parmas" categoryid=foodtype.typeid childcid=0 order_ruler=order_ruler %}">{{ foodtype.typename }}</a>
+                        {% ifequal categoryid foodtype.typeid %}
+                            <span class="yellowSlide"></span>
+                        {% endifequal %}
+                    </li>
+
+                {% endfor %}
+            </ul>
+        </aside>
+        {#        右侧#}
+        <section>
+            <nav>
+                <ul>
+                    <li id="all_type">
+                        <span>全部分类<i class="glyphicon glyphicon-chevron-down"></i></span>
+                    </li>
+                    <li id="order_ruler">
+                        <span>综合排序<i class="glyphicon glyphicon-chevron-down"></i></span>
+                    </li>
+                </ul>
+            </nav>
+            {#     商品详情#}
+            <menu>
+                <ul>
+                    {% for food in foods %}
+                        <li>
+                            <a href="#">
+                                <img src="{{ food.productimg }}" alt="">
+                                <div class="shoppingInfo">
+                                    <h6>{{ food.productlongname }}</h6>
+                                    <p class="detailTag">
+                                        <span>精选</span><span> </span>
+                                    </p>
+                                    <p class="unit">{{ food.specifics }}</p>
+                                    <p class="price">
+                                        <span>￥{{ food.price }}</span>
+                                        <s>{{ food.marketprice }}</s>
+
+                                    </p>
+
+                                </div>
+                            </a>
+                            <section>
+                                <button class="delshopping" goodsid="{{ food.id }}">-</button>
+                                {% if food.view %}
+                                    <span>{{ food.view }}</span>
+                                    {%  else %}
+                                    <span>0</span>
+                                {% endif %}
+
+                                <button class="addshopping" goodsid="{{ food.id }}">+</button>
+                            </section>
+                        </li>
+                    {% endfor %}
+
+                </ul>
+
+{#                隐藏框#}
+                <div id="all_type_container">
+                    <div>
+                        {% for child_type in child_type_list %}
+                            <a href="{% url "axf:market_with_parmas" categoryid=categoryid childcid=child_type.1 order_ruler=order_ruler %}">
+                                {% ifequal childcid child_type.1 %}
+                                    <button class="btn btn-default btn-warning">{{ child_type.0 }}</button>
+                                {% else %}
+                                    <button class="btn btn-default">{{ child_type.0 }}</button>
+                                {% endifequal %}
+                            </a>
+                        {% endfor %}
+
+
+                    </div>
+                </div>
+                <div id="order_ruler_container">
+                    <div>
+                        <a href="{% url "axf:market_with_parmas" categoryid=categoryid childcid=childcid order_ruler=0 %}">
+                            {% ifequal order_ruler "0" %}
+                                <button class="btn btn-default btn-warning">综合排序</button>
+                            {% else %}
+                                <button class="btn btn-default">综合排序</button>
+                            {% endifequal %}
+
+                        </a>
+                        <a href="{% url "axf:market_with_parmas" categoryid=categoryid childcid=childcid order_ruler=1 %}">
+                            {% ifequal order_ruler "1" %}
+                                <button class="btn btn-default btn-warning">价格升序</button>
+                            {% else %}
+                                <button class="btn btn-default">价格升序</button>
+                            {% endifequal %}
+                        </a>
+                        <a href="{% url "axf:market_with_parmas" categoryid=categoryid childcid=childcid order_ruler=2 %}">
+                            {% ifequal order_ruler "2" %}
+                                <button class="btn btn-default btn-warning">价格降序</button>
+                            {% else %}
+                                <button class="btn btn-default">价格降序</button>
+                            {% endifequal %}
+                        </a>
+                    </div>
+                </div>
+
+            </menu>
+        </section>
+
+
+    </div>
+
+
+{% endblock %}

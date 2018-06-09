@@ -1,0 +1,61 @@
+{% extends "base/base_order.html" %}
+
+{% load static %}
+
+
+{% block extCSS %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static "axf/order/css/orderlist.css" %} ">
+{% endblock %}
+
+
+{% block extJS %}
+    {{ block.super }}
+    <script type="text/javascript" src="{% static "axf/order/js/orderlist.js" %}"></script>
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <ul>
+            {% for order in orders %}
+                <a href="{% url "axf:order_info" %}?order_id={{ order.id }}">
+                    <h3 id="order_dital">订单{{ order.id }}详情</h3>
+                </a>
+                <li>
+                    <section>
+                        <menu>
+                            <ul>
+                                {% for ordergoods in order.ordergoods_set.all %}
+                                    <li>
+                                        <a href="#">
+                                            <img src="{{ ordergoods.o_goods.productimg }}"
+                                                 alt="ordergoods.o_goods.productlongname">
+                                            <div class="shoppingInfo">
+                                                <h6>{{ ordergoods.o_goods.productlongname }}</h6>
+
+                                                <p class="unit">{{ ordergoods.o_goods_num }}</p>
+                                                <p class="price">
+                                                    <span>￥{{ ordergoods.o_goods.price }}</span>
+                                                </p>
+
+                                            </div>
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </menu>
+
+
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %}
+
+
+
+
+
+
+
+
+
